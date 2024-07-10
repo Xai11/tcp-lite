@@ -4,6 +4,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+
+/*
+ * Это пока что тестовый класс.
+ * Он нужен для имитации нескольких клиентов.
+ * Его код может отличаться от главного класса Client.
+ */
 public class ClientTwo {
     private static final String SERVER_NAME = "127.0.0.1";
     private static final int PORT = 8081;
@@ -12,10 +18,12 @@ public class ClientTwo {
 
     public static void main(String[] args) throws Exception {
         client = new Socket(SERVER_NAME, PORT);
+
+        // Это нужно будет убрать или засунуть в отдельный метод
         Scanner in = new Scanner(client.getInputStream());
         displayData(in);
 
-
+        // Вот этот вот блок раньше работал, а щас то че.... :(
 //        PrintWriter out = new PrintWriter(client.getOutputStream());
 //
 //        for(int i = 0; i < 10; i++) {

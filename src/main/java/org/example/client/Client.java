@@ -18,20 +18,20 @@ public class Client  {
         try{
             client = new Socket(SERVER_NAME, PORT);
             // Клиент соединился с сервером
+
             out = new PrintWriter(client.getOutputStream());
 
-            out.println("Huy");
+            // Ну вот здесь же должен вывести на сервере, ну до этого же работало....
+            out.println("Клиент тут!");
             out.flush();
 
+            // Отправка сообщений (должна быть)
+            // Но пока что убрана.
+
             client.close();
-        } catch (IOException error){
+        } catch (IOException error) {
             error.printStackTrace();
         }
-
-
-         //Отправка сообщений
-
-
 
     }
     public static void getChoiceOption() {
