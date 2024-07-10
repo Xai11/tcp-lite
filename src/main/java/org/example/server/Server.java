@@ -1,48 +1,81 @@
 package org.example.server;
 
+
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class Server {
-    private static final int PORT = 8081;
-    private static final String SERVER_URL = "www.tcptestproject.com";
-    private static HashMap<SocketAddress, String> hostUrl = new HashMap<>();
-    private static PrintWriter out;
+public class Server implements Runnable {
+    private final static int PORT = 9999;
+    private final static String SERVER_URL = "www.tcptestproject.com";
+    private static List<Socket> USERS = new ArrayList<>();
+    public PrintWriter out;
+    private Scanner input;
 
-
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(PORT);
-        Socket server = serverSocket.accept();
-
-        hostUrl.put(server.getLocalSocketAddress(), SERVER_URL);
-
-        out = new PrintWriter(server.getOutputStream());
-        out.println("Вы подключены к " + hostUrl.get(server.getLocalSocketAddress()));
-
-
-
-        Scanner in = new Scanner(System.in);
-        displayData(in, out);
-
-        out.close();
-        in.close();
-        server.close();
-        serverSocket.close();
-
-    }
-    static void postChoiceOption() {
-
+    public void postChoiceOption() {
     }
 
-    static void displayData(Scanner input, PrintWriter out) {
+    public void displayData(Scanner input, PrintWriter out) {
         while(input.hasNext()) {
             out.println(input.nextLine());
             out.flush();
         }
+    }
+    public void commitConnection(PrintWriter out) {
+        out.println("Вы подключены к " + SERVER_URL);
+        out.flush();
+    }
+    @Override
+    public void run() {
+            try {
+                // Создаем рабочий сокет
+                ServerSocket serverSocket = new ServerSocket(PORT);
+                // Ловим соединение клиента с сервером
+                Socket server = serverSocket.accept();
+
+                if(server.isConnected()){
+                    System.out.print("Я поймал соединение!");
+                }
+                out = new PrintWriter(server.getOutputStream());
+                // Сообщение о подключении к серверу
+                commitConnection(out);
+
+
+            } catch (RuntimeException error) {
+                error.printStackTrace();
+
+            } catch (IOException error) {
+                error.printStackTrace();
+            }
+
+
+            //        Scanner in = new Scanner(System.in);
+            //        displayData(in, out);
+
+    }
+    public void queryChoiceOption(PrintWriter out) {
+        out.println("Вам доступны следующие действия:");
+        out.println("Введите /c, чтобы отправить сообщение на сервер.");
+        out.println("Введите /q, чтобы покинуть сервер.");
+        out.flush();
+    }
+
+    public void addSocketToUSERS(Socket server) throws IOException {
+
+    }
+    public void sendMessageToClient(PrintWriter out) {
+        System.out.print("Введите сообщение: ");
+        input = new Scanner(System.in);
+        while(input.hasNext()){
+            out.println("Сообщение от сервера: " + input.nextLine());
+            out.flush();
+        }
+
     }
 }
