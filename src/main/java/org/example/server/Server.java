@@ -12,11 +12,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Server implements Runnable {
+    private int numb;
     private final static int PORT = 9999;
     private final static String SERVER_URL = "www.tcptestproject.com";
     private static List<Socket> USERS = new ArrayList<>();
     public PrintWriter out;
     private Scanner input;
+    ServerSocket serverSocket;
+
+    public Server(ServerSocket serverSocket, int numb) throws IOException {
+        this.serverSocket = serverSocket;
+        this.numb = numb;
+    }
 
     public void postChoiceOption() {
     }
@@ -34,18 +41,20 @@ public class Server implements Runnable {
     @Override
     public void run() {
             try {
-                // Создаем рабочий сокет
-                ServerSocket serverSocket = new ServerSocket(PORT);
-                // Ловим соединение клиента с сервером
-                Socket server = serverSocket.accept();
+                while (true) {
+                    // Создаем рабочий сокет
 
-                if(server.isConnected()){
-                    System.out.print("Я поймал соединение!");
+                    // Ловим соединение клиента с сервером
+                    Socket server = serverSocket.accept();
+
+                    if (server.isConnected()) {
+                        System.out.print("Я поймал соединение!");
+                        System.out.print(" Я поток №" + numb);
+                    }
+                    out = new PrintWriter(server.getOutputStream());
+                    // Сообщение о подключении к серверу
+                    commitConnection(out);
                 }
-                out = new PrintWriter(server.getOutputStream());
-                // Сообщение о подключении к серверу
-                commitConnection(out);
-
 
             } catch (RuntimeException error) {
                 error.printStackTrace();

@@ -4,11 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.TreeMap;
 
-import static java.lang.Thread.sleep;
-
-public class Client  {
+public class ClientTwoNew {
     private static final String SERVER_NAME = "127.0.0.1";
     private static final int PORT = 9999;
     private static Socket client;
@@ -23,7 +20,6 @@ public class Client  {
 
             // Ну вот здесь же должен вывести на сервере, ну до этого же работало....
             out.println("Клиент тут!");
-            sleep(20000);
             out.flush();
 
             // Отправка сообщений (должна быть)
@@ -32,8 +28,6 @@ public class Client  {
             client.close();
         } catch (IOException error) {
             error.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
 
     }
