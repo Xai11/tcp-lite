@@ -13,6 +13,7 @@ public class Client  {
     private static final int PORT = 9999;
     private static Socket client;
     private static PrintWriter out;
+    private static Scanner input;
 
     public static void main(String[] args) throws IOException {
         try{
@@ -22,9 +23,13 @@ public class Client  {
             out = new PrintWriter(client.getOutputStream());
 
             // Ну вот здесь же должен вывести на сервере, ну до этого же работало....
-            out.println("Клиент тут!");
-            sleep(20000);
+            //out.println("Клиент тут!");
             out.flush();
+            input = new Scanner(client.getInputStream());
+            displayData(input);
+            //sleep(20000);
+
+
 
             // Отправка сообщений (должна быть)
             // Но пока что убрана.
@@ -32,8 +37,6 @@ public class Client  {
             client.close();
         } catch (IOException error) {
             error.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
 
     }

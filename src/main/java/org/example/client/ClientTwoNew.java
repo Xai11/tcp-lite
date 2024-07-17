@@ -11,6 +11,8 @@ public class ClientTwoNew {
     private static Socket client;
     private static PrintWriter out;
 
+    private static Scanner input;
+
     public static void main(String[] args) throws IOException {
         try{
             client = new Socket(SERVER_NAME, PORT);
@@ -21,6 +23,8 @@ public class ClientTwoNew {
             // Ну вот здесь же должен вывести на сервере, ну до этого же работало....
             out.println("Клиент тут!");
             out.flush();
+            input = new Scanner(client.getInputStream());
+            displayData(input);
 
             // Отправка сообщений (должна быть)
             // Но пока что убрана.
@@ -39,6 +43,7 @@ public class ClientTwoNew {
     public static void displayData(Scanner input) {
         while(input.hasNext()) {
             System.out.println(input.nextLine());
+            break;
         }
     }
     public static void sendMessageToServer(PrintWriter out) {
