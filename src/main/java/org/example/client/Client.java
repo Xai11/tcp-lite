@@ -23,11 +23,11 @@ public class Client  {
             out = new PrintWriter(client.getOutputStream());
 
             // Ну вот здесь же должен вывести на сервере, ну до этого же работало....
-            //out.println("Клиент тут!");
+            out.println("Клиент тут!");
             out.flush();
             input = new Scanner(client.getInputStream());
             displayData(input);
-            //sleep(20000);
+            sleep(20000);
 
 
 
@@ -37,6 +37,8 @@ public class Client  {
             client.close();
         } catch (IOException error) {
             error.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
     }

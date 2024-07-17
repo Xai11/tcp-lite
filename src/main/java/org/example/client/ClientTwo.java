@@ -1,53 +1,59 @@
 package org.example.client;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.TreeMap;
 
+import static java.lang.Thread.sleep;
 
-/*
- * Это пока что тестовый класс.
- * Он нужен для имитации нескольких клиентов.
- * Его код может отличаться от главного класса Client.
- */
-public class ClientTwo {
+public class ClientTwo  {
     private static final String SERVER_NAME = "127.0.0.1";
-    private static final int PORT = 8081;
-    private static PrintWriter input;
+    private static final int PORT = 9999;
     private static Socket client;
+    private static PrintWriter out;
+    private static Scanner input;
 
-    public static void main(String[] args) throws Exception {
-        client = new Socket(SERVER_NAME, PORT);
+    public static void main(String[] args) throws IOException {
+        try{
+            client = new Socket(SERVER_NAME, PORT);
+            // Клиент соединился с сервером
 
-        // Это нужно будет убрать или засунуть в отдельный метод
-        Scanner in = new Scanner(client.getInputStream());
-        displayData(in);
+            out = new PrintWriter(client.getOutputStream());
 
-        // Вот этот вот блок раньше работал, а щас то че.... :(
-//        PrintWriter out = new PrintWriter(client.getOutputStream());
-//
-//        for(int i = 0; i < 10; i++) {
-//            out.println(i);
-//            out.flush();
-//        }
-//        out.close();
+            // Ну вот здесь же должен вывести на сервере, ну до этого же работало....
+            //out.println("Клиент тут!");
+            out.flush();
+            input = new Scanner(client.getInputStream());
+            displayData(input);
+            //sleep(20000);
 
 
-        client.close();
+
+            // Отправка сообщений (должна быть)
+            // Но пока что убрана.
+
+            client.close();
+        } catch (IOException error) {
+            error.printStackTrace();
+        }
 
     }
-    static void getChoiceOption() {
+    public static void getChoiceOption() {
         System.out.println("Введите вариант");
         Scanner scanner = new Scanner(System.in);
         int choice = Integer.parseInt(scanner.nextLine());
     }
-    static void displayData(Scanner input) {
+    public static void displayData(Scanner input) {
         while(input.hasNext()) {
             System.out.println(input.nextLine());
         }
     }
-    static void inputDataToServer() {
-
+    public static void sendMessageToServer(PrintWriter out) {
+        System.out.print("Введите сообщение: ");
+        out.flush();
     }
+
 
 }
