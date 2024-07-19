@@ -24,8 +24,9 @@ public class Server implements Runnable {
     }
 
     // Метод для вывода сообщения отправленного клиентом
-    public static void displayData(Scanner input) {
+    public static void displayData(Scanner input, int number_stream) {
         while(input.hasNext()) {
+            System.out.print("Поток № " + number_stream + " ответ. ");
             System.out.println(input.nextLine());
             break;
         }
@@ -47,7 +48,7 @@ public class Server implements Runnable {
 
                 // Проверка подключения
                 if (server.isConnected()) {
-                    System.out.print("Соединение установленно. Поток № " + number_stream);
+                    System.out.println("Поток № " + number_stream + " Соединение установленно.");
 
                     // Определение output и input потоков общения сокета
                     output = new PrintWriter(server.getOutputStream());
@@ -57,7 +58,12 @@ public class Server implements Runnable {
                     commitConnection(output);
 
                     // Ожидание сообщения от клиента
-                    displayData(input);
+                    displayData(input, number_stream);
+
+                    System.out.println("Поток № " + number_stream + ". Клиент отключился! Поток свободен");
+                }
+                else {
+                    System.out.println("Клиент не смог подключиться к потоку № " + number_stream);
                 }
                 // Отключение соединения  с клиентом
                 server.close();

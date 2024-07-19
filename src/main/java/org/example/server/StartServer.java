@@ -16,9 +16,10 @@ public class StartServer {
 
         // Создаем потоки сервера
         for(int i = 0; i < 3; i++) {
-            server[i] = new Server(serverSocket, i);
+            server[i] = new Server(serverSocket, i + 1);
             thread[i] = new Thread(server[i]);
             thread[i].start();
+            System.out.println("Запуск потока № " + (i + 1));
         }
 
 //        server[0] = null;

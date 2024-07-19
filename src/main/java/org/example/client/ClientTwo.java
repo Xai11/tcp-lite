@@ -4,15 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.TreeMap;
-
-import static java.lang.Thread.sleep;
 
 public class ClientTwo  {
     private static final String SERVER_NAME = "127.0.0.1";
     private static final int PORT = 9999;
     private static Socket client;
-    private static PrintWriter out;
+    private static PrintWriter output;
     private static Scanner input;
 
     public static void main(String[] args) throws IOException {
@@ -20,40 +17,29 @@ public class ClientTwo  {
             client = new Socket(SERVER_NAME, PORT);
             // Клиент соединился с сервером
 
-            out = new PrintWriter(client.getOutputStream());
-
-            // Ну вот здесь же должен вывести на сервере, ну до этого же работало....
-            //out.println("Клиент тут!");
-            out.flush();
+            // Определение output и input потоков общения сокета
+            output = new PrintWriter(client.getOutputStream());
             input = new Scanner(client.getInputStream());
+
+            // Отправка сообщения на сервер
+            output.println("Клиент второй!");
+            output.flush();
+
+            // Прием приветствия от сервера
             displayData(input);
-            //sleep(20000);
 
-
-
-            // Отправка сообщений (должна быть)
-            // Но пока что убрана.
-
+            // Отключение клиента
             client.close();
         } catch (IOException error) {
             error.printStackTrace();
         }
 
     }
-    public static void getChoiceOption() {
-        System.out.println("Введите вариант");
-        Scanner scanner = new Scanner(System.in);
-        int choice = Integer.parseInt(scanner.nextLine());
-    }
+    // Метод для вывода сообщения отправленного сервером
     public static void displayData(Scanner input) {
         while(input.hasNext()) {
             System.out.println(input.nextLine());
+            break;
         }
     }
-    public static void sendMessageToServer(PrintWriter out) {
-        System.out.print("Введите сообщение: ");
-        out.flush();
-    }
-
-
 }
