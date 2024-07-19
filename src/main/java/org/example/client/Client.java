@@ -27,7 +27,7 @@ public class Client  {
             out.flush();
             input = new Scanner(client.getInputStream());
             displayData(input);
-            sleep(20000);
+            sleep(1000);
 
 
 
