@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ClientManualImput {
+public class ClientManualInput {
     private static final String SERVER_NAME = "127.0.0.1";
     private static final int PORT = 9999;
     private static Socket client;

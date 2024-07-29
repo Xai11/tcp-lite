@@ -19,7 +19,6 @@ public class StartServer {
             server[i] = new Server(serverSocket, i + 1);
             thread[i] = new Thread(server[i]);
             thread[i].start();
-            System.out.println("Запуск потока № " + (i + 1));
         }
 
 //        server[0] = null;

@@ -15,8 +15,9 @@ public class Server implements Runnable {
     private final static String SERVER_URL = "www.tcptestproject.com";
     public PrintWriter output;
     private Scanner input;
-    ServerSocket serverSocket;
+    private ServerSocket serverSocket;
     private ReentrantLock locker = new ReentrantLock();
+    private Database database = new Database();
 
     public Server(ServerSocket serverSocket, int numb) throws IOException {
         this.serverSocket = serverSocket;
@@ -24,12 +25,13 @@ public class Server implements Runnable {
     }
 
     // Метод для вывода сообщения отправленного клиентом
-    public static void displayData(Scanner input, int number_stream) {
+    public void displayData(Scanner input, int number_stream, Socket server) {
+        String data = "";
         while(input.hasNext()) {
-            System.out.print("Поток № " + number_stream + " ответ. ");
-            System.out.println(input.nextLine());
+            data = input.nextLine();
             break;
         }
+        database.updateTable("client_info", server, data);
     }
 
     // Метод для отправки приветствия клиенту
@@ -48,8 +50,7 @@ public class Server implements Runnable {
 
                 // Проверка подключения
                 if (server.isConnected()) {
-                    System.out.println("Поток № " + number_stream + " Соединение установленно.");
-
+                    System.out.println("Клиент " + server.getInetAddress() + " подключился");
                     // Определение output и input потоков общения сокета
                     output = new PrintWriter(server.getOutputStream());
                     input = new Scanner(server.getInputStream());
@@ -58,15 +59,16 @@ public class Server implements Runnable {
                     commitConnection(output);
 
                     // Ожидание сообщения от клиента
-                    displayData(input, number_stream);
-
-                    System.out.println("Поток № " + number_stream + ". Клиент отключился! Поток свободен");
+                    displayData(input, number_stream, server);
                 }
                 else {
-                    System.out.println("Клиент не смог подключиться к потоку № " + number_stream);
+                    System.out.println("Клиент " + server.getInetAddress()
+                            + " не смог подключиться");
                 }
                 // Отключение соединения  с клиентом
+                System.out.println("Клиент " + server.getInetAddress() + " отключился");
                 server.close();
+
 
             } catch (RuntimeException error) {
                 error.printStackTrace();
